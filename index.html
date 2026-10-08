@@ -153,12 +153,16 @@
     <p class="saved-note" id="own-note">Your writing stays on this device and isn't sent anywhere. It may not be here next time, so copy it into your journal or notes app to keep it.</p>
   </details>
 
-  <div class="signup">
+  <div class="signup" id="skool-box">
     <span class="mc-eyebrow">Want more?</span>
     <h3>More tools in <em class="mc-accent">Crystal Skool</em></h3>
     <p>Find more tools, guides and support for your crystal practice inside our Crystal Skool community.</p>
     <a class="mc-btn" href="https://www.skool.com/mooncat-9307/about?sc=1" target="_blank" rel="noopener">Explore Crystal Skool</a>
   </div>
+  <script>
+    // Opened from the Crystal Skool dashboard (?from=skool): they're already members.
+    try { if (new URLSearchParams(location.search).get("from") === "skool") document.getElementById("skool-box").hidden = true; } catch (e) {}
+  </script>
 
   <p class="care-note"><em>Remember: a reframe isn't meant to argue with something painful that really happened, or to make a feeling go away. It's just a second way of looking at a thought, so you have a choice. If a belief is tied to something heavy, or you're having thoughts of harming yourself, please reach out to someone you trust or a mental health professional. In the U.S., you can call or text 988 any time. And if setting a boundary or speaking up doesn't feel safe with someone in your life, trust that feeling. The National Domestic Violence Hotline (1-800-799-7233) can help you think it through.</em></p>
   <p class="disclaimer">These reframes and prompts are for reflection and journaling. They're not therapy or medical advice, and crystals are a supportive practice, not a treatment. <a href="https://quiz.mooncatcrystals.com">Not sure which crystal fits you? Take the quiz.</a></p>
