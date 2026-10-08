@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belief Reframes | Mooncat Crystals</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Pick the thought that's been holding you back and get a more balanced way to see it, with a journal prompt and a crystal to keep nearby.">
+<link rel="icon" href="https://www.mooncatcrystals.com/cdn/shop/files/Untitled_design_4.avif?v=1771447662&width=96">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script>
+  // Light/dark matches the Crystal Skool dashboard and the Crystal Care tool:
+  // same "crystalskool-theme" key and ?theme= param.
+  (function () {
+    var t = null;
+    try { t = new URLSearchParams(location.search).get("theme"); } catch (e) {}
+    if (t !== "light" && t !== "dark") { try { t = localStorage.getItem("crystalskool-theme"); } catch (e) {} }
+    if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<style>
+  /* Colors, fonts and buttons come from the shared mooncat-theme.css (linked
+     below), same as the Crystal Care tool. This block is layout only. */
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 64px 20px 100px; }
+  .page-header { text-align: center; padding-bottom: 26px; }
+  .page-header h1 { margin: 0 0 12px; }
+  .subtitle { font-size: 15px; color: var(--mc-muted); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+  .step { margin-top: 26px; }
+  .step-label { display: block; text-align: center; font-size: 12.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mc-muted); margin-bottom: 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .chip { all: unset; box-sizing: border-box; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--mc-text); background: var(--chip-bg); border: 1px solid var(--chip-border); border-radius: 999px; padding: 8px 15px; transition: all 0.15s ease; }
+  .chip[aria-pressed="true"] { background: var(--mc-accent); border-color: var(--mc-accent); color: var(--mc-bg, #111); }
+  .chip:focus-visible, .belief:focus-visible, .mc-btn:focus-visible, .link-btn:focus-visible, textarea:focus-visible { outline: 2px solid var(--mc-accent); outline-offset: 2px; }
+
+  .topic-intro { text-align: center; color: var(--mc-muted); font-size: 14.5px; max-width: 520px; margin: 0 auto 14px; }
+  .beliefs { display: grid; gap: 8px; }
+  .belief { all: unset; box-sizing: border-box; cursor: pointer; display: block; width: 100%; padding: 13px 16px; border: 1px solid var(--mc-line); border-radius: 14px; background: var(--mc-surface); color: var(--mc-heading); font-size: 15.5px; line-height: 1.45; transition: all 0.15s ease; }
+  .belief:hover { background: var(--mc-surface-hover); }
+  .belief[aria-pressed="true"] { border-color: var(--mc-accent); }
+
+  .result { margin-top: 22px; background: var(--mc-surface); border: 1px solid var(--mc-line); border-radius: 18px; padding: 28px 26px; }
+  .result .old { text-align: center; color: var(--mc-muted); font-size: 15px; margin: 4px 0 18px; }
+  .result .old q { font-style: italic; }
+  .result .new { text-align: center; font-size: clamp(21px, 3.6vw, 25px); line-height: 1.45; font-weight: 300; margin: 6px 0 4px; color: var(--mc-heading); }
+  .section { border-top: 1px solid var(--mc-line); padding: 16px 0 2px; margin-top: 18px; }
+  .section p { margin: 6px 0 12px; font-size: 15px; line-height: 1.65; }
+  .prompt-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .link-btn { all: unset; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--mc-accent); white-space: nowrap; }
+  .link-btn:hover { text-decoration: underline; }
+  .result .mc-btn { display: block; text-align: center; text-decoration: none; margin: 10px auto 0; max-width: 340px; }
+  .nav-row { display: flex; justify-content: center; gap: 22px; margin-top: 18px; }
+
+  .own { margin-top: 30px; background: var(--mc-surface); border: 1px solid var(--mc-line); border-radius: 18px; padding: 24px; }
+  .own summary { list-style: none; cursor: pointer; text-align: center; }
+  .own summary::-webkit-details-marker { display: none; }
+  .own h3 { font-size: 22px; font-weight: 300; margin: 6px 0 4px; }
+  .own .hint { font-size: 14px; color: var(--mc-muted); margin: 0; }
+  .own label { display: block; font-size: 14.5px; font-weight: 600; color: var(--mc-heading); margin: 18px 0 6px; }
+  .own label span { display: block; font-weight: 400; color: var(--mc-muted); font-size: 13.5px; }
+  .own textarea { width: 100%; min-height: 64px; resize: vertical; font: inherit; font-size: 15px; color: var(--mc-text); background: var(--entry-bg, transparent); border: 1px solid var(--mc-line); border-radius: 12px; padding: 10px 12px; }
+  .own .actions { display: flex; justify-content: center; gap: 22px; margin-top: 16px; }
+  .own .saved-note { text-align: center; font-size: 12.5px; color: var(--mc-muted); margin: 10px 0 0; }
+
+  .signup { margin-top: 30px; background: var(--mc-surface); border: 1px solid var(--mc-line); border-radius: 18px; padding: 26px 24px; text-align: center; }
+  .signup h3 { font-size: 24px; font-weight: 300; margin: 0 0 8px; }
+  .signup p { font-size: 14.5px; line-height: 1.6; color: var(--mc-muted); margin: 0 auto 16px; max-width: 440px; }
+  .signup .mc-btn { text-decoration: none; display: inline-block; }
+
+  .care-note { margin: 30px auto 0; max-width: 560px; text-align: center; font-size: 14px; line-height: 1.65; color: var(--mc-muted); }
+  .care-note b { color: var(--mc-heading); font-weight: 600; }
+  .disclaimer { margin-top: 22px; font-size: 12.5px; line-height: 1.65; color: var(--mc-muted); text-align: center; }
+  .disclaimer a { color: var(--mc-accent); }
+
+  .theme-toggle { position: fixed; top: 20px; right: 20px; z-index: 20; display: flex; align-items: center; gap: 4px; border: 1px solid; border-radius: 999px; padding: 5px; }
+  .theme-toggle button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; transition: all 0.2s ease; }
+  .theme-toggle button:focus-visible { outline: 2px solid var(--mc-accent); }
+  .theme-toggle svg { width: 15px; height: 15px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 520px) {
+    .wrap { padding: 72px 16px 80px; }
+    .result { padding: 22px 18px; }
+    .own { padding: 20px 16px; }
+  }
+</style>
+<link rel="stylesheet" href="https://dashboard.mooncatcrystals.com/mooncat-theme.css">
+</head>
+<body>
+<div class="theme-toggle" role="group" aria-label="Light or dark mode">
+  <button type="button" id="btn-dark" aria-label="Dark mode"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg></button>
+  <button type="button" id="btn-light" aria-label="Light mode"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+</div>
+<div class="wrap">
+  <div class="page-header">
+    <a class="mc-logo" href="https://www.mooncatcrystals.com"><img src="https://www.mooncatcrystals.com/cdn/shop/files/logo-mooncat.png?width=255" alt="Mooncat Crystals" width="72" height="72"></a>
+    <span class="mc-eyebrow">Belief Reframes</span>
+    <h1>A different way to see <em>that thought</em></h1>
+    <p class="subtitle">Pick what's on your mind and choose the thought that sounds most like yours. You'll get a more balanced way to look at it, a journal prompt, and a crystal to keep nearby while you work with it.</p>
+  </div>
+
+  <div class="step">
+    <span class="step-label">1. What's on your mind?</span>
+    <div class="chips" id="topics" aria-label="Topics"></div>
+  </div>
+
+  <div class="step" id="step2" hidden>
+    <span class="step-label">2. Which thought sounds like yours?</span>
+    <p class="topic-intro" id="topic-intro"></p>
+    <div class="beliefs" id="beliefs"></div>
+  </div>
+
+  <div class="result" id="result" hidden aria-live="polite">
+    <span class="mc-eyebrow" style="display:block;text-align:center">Instead of</span>
+    <p class="old"><q id="r-old"></q></p>
+    <span class="mc-eyebrow" style="display:block;text-align:center">Try</span>
+    <p class="new" id="r-new"></p>
+    <div class="section">
+      <div class="prompt-row"><span class="mc-eyebrow">Journal prompt</span><button type="button" class="link-btn" id="next-prompt">Another prompt</button></div>
+      <p id="r-prompt"></p>
+    </div>
+    <div class="section">
+      <span class="mc-eyebrow">Keep nearby: <span id="r-crystals"></span></span>
+      <p id="r-why"></p>
+      <a class="mc-btn" id="r-shop" href="#" target="_blank" rel="noopener"></a>
+    </div>
+    <div class="nav-row">
+      <button type="button" class="link-btn" id="other-thought">Pick another thought</button>
+      <button type="button" class="link-btn" id="other-topic">Choose a different topic</button>
+    </div>
+  </div>
+
+  <details class="own" id="own">
+    <summary>
+      <span class="mc-eyebrow">Don't see yours?</span>
+      <h3>Write your own <em class="mc-accent">reframe</em></h3>
+      <p class="hint">Three questions to walk you through it. Tap to open.</p>
+    </summary>
+    <label for="own-1">The thought<span>Write it the way it sounds in your head.</span></label>
+    <textarea id="own-1" placeholder="I always..."></textarea>
+    <label for="own-2">Is it true every single time?<span>Look for even one exception. Exceptions loosen a thought's grip.</span></label>
+    <textarea id="own-2"></textarea>
+    <label for="own-3">What would you say to a friend who thought this?<span>Most of us are kinder and more realistic with friends than with ourselves.</span></label>
+    <textarea id="own-3"></textarea>
+    <label for="own-4">A more balanced version<span>Not the opposite, just something you can actually believe today.</span></label>
+    <textarea id="own-4" placeholder="Sometimes... and..."></textarea>
+    <div class="actions">
+      <button type="button" class="link-btn" id="own-copy">Copy my reframe</button>
+      <button type="button" class="link-btn" id="own-clear">Clear</button>
+    </div>
+    <p class="saved-note" id="own-note">Your writing stays on this device and isn't sent anywhere. It may not be here next time, so copy it into your journal or notes app to keep it.</p>
+  </details>
+
+  <div class="signup">
+    <span class="mc-eyebrow">Want more?</span>
+    <h3>More tools in <em class="mc-accent">Crystal Skool</em></h3>
+    <p>Find more tools, guides and support for your crystal practice inside our Crystal Skool community.</p>
+    <a class="mc-btn" href="https://www.skool.com/mooncat-9307/about?sc=1" target="_blank" rel="noopener">Explore Crystal Skool</a>
+  </div>
+
+  <p class="care-note"><b>Go gently.</b> A reframe isn't meant to argue with something painful that really happened, or to make a feeling go away. It's just a second way of looking at a thought, so you have a choice. If a belief is tied to something heavy, or you're having thoughts of harming yourself, please reach out to someone you trust or a mental health professional. In the U.S., you can call or text 988 any time. And if setting a boundary or speaking up doesn't feel safe with someone in your life, trust that feeling. The National Domestic Violence Hotline (1-800-799-7233) can help you think it through.</p>
+  <p class="disclaimer">These reframes and prompts are for reflection and journaling. They're not therapy or medical advice, and crystals are a supportive practice, not a treatment. <a href="https://quiz.mooncatcrystals.com">Not sure which crystal fits you? Take the quiz.</a></p>
+</div>
+
+<script>
+(function () {
+  var darkBtn = document.getElementById("btn-dark"), lightBtn = document.getElementById("btn-light");
+  function setTheme(t, save) {
+    document.documentElement.setAttribute("data-theme", t);
+    darkBtn.classList.toggle("active", t === "dark");
+    lightBtn.classList.toggle("active", t === "light");
+    darkBtn.setAttribute("aria-pressed", t === "dark");
+    lightBtn.setAttribute("aria-pressed", t === "light");
+    if (save) { try { localStorage.setItem("crystalskool-theme", t); } catch (e) {} }
+  }
+  darkBtn.addEventListener("click", function () { setTheme("dark", true); });
+  lightBtn.addEventListener("click", function () { setTheme("light", true); });
+  setTheme(document.documentElement.getAttribute("data-theme") || "dark", false);
+})();
+
+(function () {
+  var topics = [], topic = null, belief = null, promptIndex = 0;
+  var $ = function (id) { return document.getElementById(id); };
+  var topicsEl = $("topics"), beliefsEl = $("beliefs"), step2 = $("step2"), result = $("result");
+
+  function renderTopics() {
+    topicsEl.innerHTML = "";
+    topics.forEach(function (t) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = t.name;
+      b.setAttribute("aria-pressed", topic && topic.id === t.id ? "true" : "false");
+      b.addEventListener("click", function () { pickTopic(t, true); });
+      topicsEl.appendChild(b);
+    });
+  }
+
+  function pickTopic(t, scroll) {
+    topic = t; belief = null;
+    renderTopics();
+    $("topic-intro").textContent = t.intro;
+    beliefsEl.innerHTML = "";
+    t.beliefs.forEach(function (x) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "belief"; b.textContent = x.b;
+      b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", function () { pickBelief(x, b); });
+      beliefsEl.appendChild(b);
+    });
+    step2.hidden = false; result.hidden = true;
+    try { history.replaceState(null, "", "?topic=" + t.id); } catch (e) {}
+    if (scroll) step2.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function pickBelief(x, btn) {
+    belief = x;
+    Array.prototype.forEach.call(beliefsEl.children, function (c) { c.setAttribute("aria-pressed", c === btn ? "true" : "false"); });
+    $("r-old").textContent = x.b;
+    $("r-new").textContent = x.r;
+    promptIndex = Math.floor(Math.random() * topic.prompts.length);
+    $("r-prompt").textContent = topic.prompts[promptIndex];
+    $("r-crystals").textContent = topic.crystals;
+    $("r-why").textContent = topic.crystalWhy;
+    var shop = $("r-shop"); shop.href = topic.shopUrl; shop.textContent = topic.shopLabel;
+    step2.hidden = true;
+    result.hidden = false;
+    result.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  $("next-prompt").addEventListener("click", function () {
+    promptIndex = (promptIndex + 1) % topic.prompts.length;
+    $("r-prompt").textContent = topic.prompts[promptIndex];
+  });
+  $("other-thought").addEventListener("click", function () {
+    result.hidden = true; step2.hidden = false;
+    step2.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  $("other-topic").addEventListener("click", function () {
+    result.hidden = true; step2.hidden = true;
+    topicsEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  // "Write your own": kept on this device only (a convenience, nothing sent).
+  var fields = ["own-1", "own-2", "own-3", "own-4"].map($);
+  try {
+    var saved = JSON.parse(localStorage.getItem("mooncat-reframe-draft") || "[]");
+    fields.forEach(function (f, i) { if (saved[i]) f.value = saved[i]; });
+  } catch (e) {}
+  fields.forEach(function (f) {
+    f.addEventListener("input", function () {
+      try { localStorage.setItem("mooncat-reframe-draft", JSON.stringify(fields.map(function (x) { return x.value; }))); } catch (e) {}
+    });
+  });
+  $("own-copy").addEventListener("click", function () {
+    var text = "Old thought: " + fields[0].value.trim() + "\nReframe: " + fields[3].value.trim();
+    var note = $("own-note");
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+      note.textContent = "Copied. Paste it into your journal or notes app.";
+    }, function () { note.textContent = "Couldn't copy automatically. You can select the text and copy it."; });
+  });
+  $("own-clear").addEventListener("click", function () {
+    fields.forEach(function (f) { f.value = ""; });
+    try { localStorage.removeItem("mooncat-reframe-draft"); } catch (e) {}
+  });
+
+  fetch("data.json").then(function (r) { return r.json(); }).then(function (d) {
+    topics = d.topics;
+    renderTopics();
+    var want = null;
+    try { want = new URLSearchParams(location.search).get("topic"); } catch (e) {}
+    var t = topics.filter(function (x) { return x.id === want; })[0];
+    if (t) pickTopic(t, false);
+  });
+})();
+</script>
+</body>
+</html>
